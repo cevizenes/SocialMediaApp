@@ -90,14 +90,30 @@ dependencies {
 
     // Android Jetpack Paging 3.0
     implementation "androidx.paging:paging-runtime:3.1.1"
-
     implementation "androidx.navigation:navigation-compose:2.6.0-rc01"
 
     //Coil
     implementation "io.coil-kt:coil-compose:2.3.0"
     //Hilt-Dagger
+
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
+
+    //Navigation Compose
+    def nav_version = "2.5.3"
+    implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    implementation "androidx.compose.material:material-icons-extended:1.4.3"
+    implementation "androidx.compose.material:material:1.4.3"
+
+    implementation "androidx.compose.material3:material3:1.1.0"
+    implementation "androidx.compose.material3:material3-window-size-class:1.1.0"
+
+
+
+
+
+
 
 
 }
