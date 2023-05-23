@@ -17,19 +17,30 @@ interface ApiService {
     }
 
     @GET("posts")
-    suspend fun getPosts() : Response<List<Posts>>
+    suspend fun getPosts(
+        @Query("_start") start : Int,
+        @Query("_limit") limit : Int
+    ) : Response<List<Posts>>
 
-    @GET("comments?{postId}")
+    @GET("posts/{postId}/comments")
     suspend fun getComments(
-        @Query("postId") postId : Int
+        @Path("postId") postId : Int,
+        @Query("_start") start : Int,
+        @Query("_limit") limit : Int
+
     ) : Response<List<Comments>>
 
     @GET("albums")
-    suspend fun getAlbums() : Response<List<Albums>>
+    suspend fun getAlbums(
+        @Query("_start") start : Int,
+        @Query("_limit") limit : Int
+    ) : Response<List<Albums>>
 
-    @GET("photos?{albumId}")
+    @GET("albums/{albumId}/photos")
     suspend fun getPhotos(
-        @Query("albumId") albumId : Int
+        @Path("albumId") albumId : Int,
+        @Query("_start") start :Int,
+        @Query("_limit") limit : Int
     ) : Response<List<Photos>>
 
 }
