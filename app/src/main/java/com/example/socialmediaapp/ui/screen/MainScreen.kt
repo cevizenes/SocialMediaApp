@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.socialmediaapp.extensions.AddItems
 
 
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(){
