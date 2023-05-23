@@ -27,7 +27,7 @@ class PhotosPagingSource(
                 val nextKey = if(photos.isEmpty()) null else start + 1
                 LoadResult.Page(
                     data = photos,
-                    prevKey = if(start == 1) null else start - 1,
+                    prevKey = if(start == 0) null else start - 1,
                     nextKey = nextKey
                 )
             }else{

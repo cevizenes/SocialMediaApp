@@ -25,7 +25,7 @@ class CommentsPagingSource(
                val nextKey = if(comments.isEmpty()) null else start + 1
                LoadResult.Page(
                    data = comments,
-                   prevKey = if(start == 1) null else start - 1,
+                   prevKey = if(start == 0) null else start - 1,
                    nextKey = nextKey
                )
            }else{

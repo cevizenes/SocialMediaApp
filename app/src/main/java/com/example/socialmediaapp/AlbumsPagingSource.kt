@@ -24,7 +24,7 @@ class AlbumsPagingSource(
                 val nextKey = if(albums.isEmpty()) null else start + 1
                 LoadResult.Page(
                     data = albums,
-                    prevKey = if(start == 1) null else start - 1,
+                    prevKey = if(start == 0) null else start - 1,
                     nextKey = nextKey
                 )
             } else {

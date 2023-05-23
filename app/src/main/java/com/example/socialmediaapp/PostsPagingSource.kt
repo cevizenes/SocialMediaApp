@@ -26,7 +26,7 @@ class PostsPagingSource(
                 val nextKey = if(posts.isEmpty()) null else start + 1
                 LoadResult.Page(
                     data = posts,
-                    prevKey = if(start == 1) null else start - 1,
+                    prevKey = if(start == 0) null else start - 1,
                     nextKey = nextKey
                 )
             }else{
