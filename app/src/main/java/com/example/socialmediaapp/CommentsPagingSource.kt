@@ -18,14 +18,14 @@ class CommentsPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Comments> {
        return try {
-           val page = params.key ?: 1
-           val response = api.getComments(postId)
+           val start = params.key ?: 0
+           val response = api.getComments(postId,start,params.loadSize)
            if(response.isSuccessful){
                val comments = response.body() ?: emptyList()
-               val nextKey = if(comments.isEmpty()) null else page + 1
+               val nextKey = if(comments.isEmpty()) null else start + 1
                LoadResult.Page(
                    data = comments,
-                   prevKey = if(page == 1) null else page - 1,
+                   prevKey = if(start == 1) null else start - 1,
                    nextKey = nextKey
                )
            }else{
