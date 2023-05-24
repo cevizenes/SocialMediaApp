@@ -1,10 +1,13 @@
 package com.example.socialmediaapp.ui.screen
 
-import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,7 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.socialmediaapp.extensions.AddItems
 
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
 @Composable
 fun MainScreen(){
    val navController = rememberNavController()
@@ -21,7 +24,10 @@ fun MainScreen(){
         bottomBar = {
           BottomBar(navController)
         }
-   ) {
+   ) { padding->
+       Box(modifier = Modifier.padding(
+           PaddingValues(bottom = padding.calculateBottomPadding())
+       ))
      BottomNavGraph(navController)
    }
 }
@@ -59,7 +65,7 @@ fun BottomNavGraph(navController: NavHostController){
            PostsScreenRoute()
        }
        composable(route = BottomBarScreen.Album.route){
-           AlbumsScreen()
+           AlbumsScreensRoute()
        }
    }
 }
