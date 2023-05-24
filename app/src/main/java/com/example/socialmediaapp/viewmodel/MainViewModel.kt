@@ -36,7 +36,7 @@ class MainViewModel @Inject constructor(
 
     fun getPosts() : Flow<PagingData<Posts>>{
         return Pager(
-            config= PagingConfig(pageSize = 10),
+            config= PagingConfig(pageSize = 1),
             pagingSourceFactory = {
                 PostsPagingSource(api)
             }
