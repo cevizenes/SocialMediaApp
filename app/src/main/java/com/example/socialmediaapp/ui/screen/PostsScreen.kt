@@ -1,7 +1,8 @@
 package com.example.socialmediaapp.ui.screen
 
 
-import android.widget.Toast
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,65 +20,85 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import com.example.socialmediaapp.data.model.Posts
-
 import com.example.socialmediaapp.ui.theme.SocialMediaAppTheme
 import com.example.socialmediaapp.viewmodel.MainViewModel
 
-
 @Composable
-fun PostsScreen(mainViewModel: MainViewModel = hiltViewModel()
+fun PostsScreenRoute(viewModel : MainViewModel = hiltViewModel() ){
+    val posts = viewModel.getPosts().collectAsLazyPagingItems()
+    PostsScreen(posts = posts)
+}
+@Composable
+internal fun PostsScreen( posts : LazyPagingItems<Posts>
 ){
-    val posts = mainViewModel.getPosts().collectAsLazyPagingItems()
-    val context = LocalContext.current
-    LaunchedEffect(key1 = posts.loadState){
-        if(posts.loadState.refresh is LoadState.Error){
-            Toast.makeText(context,"Error: " + (posts.loadState.refresh as LoadState.Error).error.message,
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
+
     Box(modifier = Modifier.fillMaxSize()){
-        if(posts.loadState.refresh is LoadState.Loading){
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }else{
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
-                items(posts){post->
-                    if(post!= null){
+                items(posts.itemCount){index->
+                    Log.d("Count","${posts.itemCount}")
+                    posts[index]?.let { post->
+
                         PostsScreenItems(
                             post = post,
                             modifier = Modifier.fillMaxWidth()
-                        )
+                            )
                     }
 
                 }
-                item{
-                    if(posts.loadState.append is LoadState.Loading){
-                        CircularProgressIndicator()
-                    }
-                }
+               posts.apply {
+                   val error = when {
+                       loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                       loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                       loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                       else -> null
+                   }
+
+                   val loading = when {
+                       loadState.prepend is LoadState.Loading -> loadState.prepend as LoadState.Loading
+                       loadState.append is LoadState.Loading -> loadState.append as LoadState.Loading
+                       loadState.refresh is LoadState.Loading -> loadState.refresh as LoadState.Loading
+                       else -> null
+                   }
+
+                   if(loading != null){
+                       repeat((0..20).count()){
+                           item {
+                               Box(
+                                   modifier = Modifier
+                                       .background(color = Color.LightGray)
+                               ){
+                                   CircularProgressIndicator()
+                               }
+                           }
+                       }
+                   }
+                   if(error != null){
+                       error.error.localizedMessage?.let { Log.e("Error",it)}
+                   }
+
+               }
+
             }
+
         }
     }
 
-}
+
 
 
 
