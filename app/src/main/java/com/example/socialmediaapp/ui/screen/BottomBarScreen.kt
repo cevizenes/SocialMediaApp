@@ -11,14 +11,14 @@ sealed class BottomBarScreen(
     val icon : ImageVector
 ) {
     object Post : BottomBarScreen(
-        route = "post",
-        title = "Post",
+        route = "posts",
+        title = "Posts",
         icon = Icons.Filled.ViewTimeline
     )
 
     object Album : BottomBarScreen(
-        route = "album",
-        title = "Album",
+        route = "albums",
+        title = "Albums",
         icon = Icons.Filled.ViewComfyAlt
     )
 
