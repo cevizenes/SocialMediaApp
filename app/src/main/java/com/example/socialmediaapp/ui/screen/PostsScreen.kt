@@ -29,9 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.example.socialmediaapp.data.model.Posts
-import androidx.paging.compose.itemContentType
-import androidx.paging.compose.itemKey
+
 import com.example.socialmediaapp.ui.theme.SocialMediaAppTheme
 import com.example.socialmediaapp.viewmodel.MainViewModel
 
@@ -59,21 +59,16 @@ fun PostsScreen(mainViewModel: MainViewModel = hiltViewModel()
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
-                items(
-            count = posts.itemCount,
-            key = posts.itemKey(),
-            contentType = posts.itemContentType(
-            )
-    ) { index ->
-        val item = posts[index]
-        if (item != null) {
-            PostsScreenItems(
-                post = item,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+                items(posts){post->
+                    if(post!= null){
+                        PostsScreenItems(
+                            post = post,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
                 }
-                item {
+                item{
                     if(posts.loadState.append is LoadState.Loading){
                         CircularProgressIndicator()
                     }
