@@ -80,7 +80,7 @@ internal fun PostsScreen( posts : LazyPagingItems<Posts>
                            item {
                                Box(
                                    modifier = Modifier
-                                       .background(color = Color.LightGray)
+                                       .background(color = Color.DarkGray)
                                ){
                                    CircularProgressIndicator()
                                }
