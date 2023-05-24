@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.socialmediaapp.extensions.AddItems
 
 
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(){
@@ -21,7 +20,7 @@ fun MainScreen(){
    Scaffold(
         bottomBar = {
           BottomBar(navController)
-        },
+        }
    ) {
      BottomNavGraph(navController)
    }
@@ -55,6 +54,7 @@ fun BottomNavGraph(navController: NavHostController){
        navController = navController,
        startDestination = BottomBarScreen.Post.route
    ){
+
        composable(route = BottomBarScreen.Post.route){
            PostsScreen()
        }

@@ -1,6 +1,5 @@
 package com.example.socialmediaapp.viewmodel
 
-import androidx.compose.animation.splineBasedDecay
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -26,7 +25,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel()
 {
 
-    fun getAlbums() : Flow<PagingData<Albums>>{
+    fun getAlbums() : Flow<PagingData<Albums>> {
         return Pager(
             config = PagingConfig(pageSize = 1),
             pagingSourceFactory = {
@@ -37,7 +36,7 @@ class MainViewModel @Inject constructor(
 
     fun getPosts() : Flow<PagingData<Posts>>{
         return Pager(
-            config= PagingConfig(pageSize = 1),
+            config= PagingConfig(pageSize = 10),
             pagingSourceFactory = {
                 PostsPagingSource(api)
             }
@@ -61,28 +60,5 @@ class MainViewModel @Inject constructor(
             }
         ).flow.cachedIn(viewModelScope)
     }
-
-
-
-
-
-
-   /* val albums : Flow<PagingData<Albums>> = Pager(
-        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-        pagingSourceFactory = {AlbumsPagingSource(api)}
-    )   .flow
-        .cachedIn(viewModelScope)
-
-    val posts : Flow<PagingData<Posts>> = Pager(
-        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-        pagingSourceFactory = {PostsPagingSource(api)}
-    )   .flow
-        .cachedIn(viewModelScope)
-
-    val photos :Flow<PagingData<Photos>> = Pager(
-        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-        pagingSourceFactory = {PhotosPagingSource(api,1)}
-    )   .flow
-        .cachedIn(viewModelScope)*/
 
 }
