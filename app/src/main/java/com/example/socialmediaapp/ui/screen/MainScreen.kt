@@ -56,7 +56,7 @@ fun BottomNavGraph(navController: NavHostController){
    ){
 
        composable(route = BottomBarScreen.Post.route){
-           PostsScreen()
+           PostsScreenRoute()
        }
        composable(route = BottomBarScreen.Album.route){
            AlbumsScreen()
