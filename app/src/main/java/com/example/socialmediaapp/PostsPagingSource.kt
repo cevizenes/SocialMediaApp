@@ -1,6 +1,5 @@
 package com.example.socialmediaapp
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.socialmediaapp.data.model.Posts
@@ -21,14 +20,14 @@ class PostsPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Posts> {
         return try {
             val start = params.key ?: 0
-            val response = api.getPosts(start,params.loadSize)
+            val response = api.getPosts(start,1)
             if(response.isSuccessful){
                 val posts = response.body() ?: emptyList()
-                val nextKey = if(posts.isEmpty()) null else start + 1
+
                 LoadResult.Page(
                     data = posts,
                     prevKey = if(start == 0) null else start - 1,
-                    nextKey = nextKey
+                    nextKey = if(posts.isEmpty()) null else start + 1
                 )
             }else{
                 return LoadResult.Error(Exception("Failed"))
