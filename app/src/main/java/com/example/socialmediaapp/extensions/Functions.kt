@@ -11,11 +11,11 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import com.example.socialmediaapp.ui.screen.BottomBarScreen
+import com.example.socialmediaapp.ui.screen.Screens
 
 @Composable
 fun RowScope.AddItems(
-    appScreen : BottomBarScreen,
+    appScreen : Screens,
     currentDestination : NavDestination?,
     navController : NavHostController
 ){
@@ -24,10 +24,12 @@ fun RowScope.AddItems(
             Text(text = appScreen.title)
         },
         icon = {
-            Icon(
-                imageVector = appScreen.icon,
-                contentDescription = "Icon"
-            )
+            appScreen.icon?.let {
+                Icon(
+                    imageVector = it,
+                    contentDescription = "Icon"
+                )
+            }
         },
         selected = currentDestination?.hierarchy?.any{ it.route == appScreen.route } == true,
         unselectedContentColor = LocalContentColor.current.copy(ContentAlpha.disabled),
