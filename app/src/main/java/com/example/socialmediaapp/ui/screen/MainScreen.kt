@@ -9,10 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.socialmediaapp.extensions.AddItems
 
 
@@ -28,7 +30,7 @@ fun MainScreen(){
        Box(modifier = Modifier.padding(
            PaddingValues(bottom = padding.calculateBottomPadding())
        ))
-     BottomNavGraph(navController)
+     NavGraph(navController)
    }
 }
 
@@ -36,8 +38,8 @@ fun MainScreen(){
 @Composable
 fun BottomBar(navController: NavHostController){
     val appScreens = listOf(
-        BottomBarScreen.Post,
-        BottomBarScreen.Album
+        Screens.Post,
+        Screens.Album
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -55,17 +57,30 @@ fun BottomBar(navController: NavHostController){
 
 
 @Composable
-fun BottomNavGraph(navController: NavHostController){
+fun NavGraph(navController: NavHostController){
    NavHost(
        navController = navController,
-       startDestination = BottomBarScreen.Post.route
+       startDestination = Screens.Post.route
    ){
 
-       composable(route = BottomBarScreen.Post.route){
+       composable(route = Screens.Post.route){
            PostsScreenRoute()
        }
-       composable(route = BottomBarScreen.Album.route){
+       composable(route = Screens.Album.route){
            AlbumsScreensRoute()
+       }
+       composable(
+           route = Screens.Comments.route.plus("?postId = {postId}"),
+          arguments = listOf(
+              navArgument("postId"){
+                  type = NavType.IntType
+                  defaultValue = 0
+              }
+          )
+       ){
+           navBackStackEntry ->
+           navBackStackEntry.arguments?.getInt("postId")?.let { CommentsScreenRoute(postId = it) }
+
        }
    }
 }

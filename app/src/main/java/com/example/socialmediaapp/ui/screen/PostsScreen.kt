@@ -3,6 +3,7 @@ package com.example.socialmediaapp.ui.screen
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -46,7 +48,7 @@ fun PostsScreenRoute(viewModel : MainViewModel = hiltViewModel() ){
 @Composable
 internal fun PostsScreen( posts : LazyPagingItems<Posts>
 ){
-
+    val navController = rememberNavController()
     Box(modifier = Modifier.fillMaxSize()){
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -58,62 +60,66 @@ internal fun PostsScreen( posts : LazyPagingItems<Posts>
                     posts[index]?.let { post->
                         PostsScreenItems(
                             post = post,
-                            modifier = Modifier.fillMaxWidth()
-                            )
+                            modifier = Modifier
+                                .clickable { navController.navigate(Screens.Comments.route.plus("?postId=${post.id}"))  },
+
+                        )
+
+                    }
+
+                    }
+                posts.apply {
+                    val error = when {
+                        loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                        loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                        loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                        else -> null
+                    }
+
+                    val loading = when {
+                        loadState.prepend is LoadState.Loading -> loadState.prepend as LoadState.Loading
+                        loadState.append is LoadState.Loading -> loadState.append as LoadState.Loading
+                        loadState.refresh is LoadState.Loading -> loadState.refresh as LoadState.Loading
+                        else -> null
+                    }
+
+                    if(loading != null){
+                        repeat((0..20).count()){
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .background(color = Color.DarkGray)
+                                ){
+                                    CircularProgressIndicator()
+                                }
+                            }
+                        }
+                    }
+                    if(error != null){
+                        error.error.localizedMessage?.let { Log.e("Error",it)}
                     }
 
                 }
-               posts.apply {
-                   val error = when {
-                       loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-                       loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-                       loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-                       else -> null
-                   }
 
-                   val loading = when {
-                       loadState.prepend is LoadState.Loading -> loadState.prepend as LoadState.Loading
-                       loadState.append is LoadState.Loading -> loadState.append as LoadState.Loading
-                       loadState.refresh is LoadState.Loading -> loadState.refresh as LoadState.Loading
-                       else -> null
-                   }
+                }
 
-                   if(loading != null){
-                       repeat((0..20).count()){
-                           item {
-                               Box(
-                                   modifier = Modifier
-                                       .background(color = Color.DarkGray)
-                               ){
-                                   CircularProgressIndicator()
-                               }
-                           }
-                       }
-                   }
-                   if(error != null){
-                       error.error.localizedMessage?.let { Log.e("Error",it)}
-                   }
-
-               }
 
             }
 
         }
-    }
 
 
 
-
-
-    
 @Composable
 fun PostsScreenItems(
     post : Posts,
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+
 ){
     Card(
         modifier = modifier,
-        elevation = 5.dp
+        elevation = 5.dp,
+        
     ){
         Row(
             modifier = Modifier
@@ -151,6 +157,7 @@ fun PostsScreenItems(
 
 }
 
+
 @Preview
 @Composable
 fun PostsItemPreview(){
@@ -162,8 +169,7 @@ fun PostsItemPreview(){
                title = "Deneme",
                userId = 1
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
             )
-
     }
 }
