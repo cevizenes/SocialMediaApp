@@ -62,9 +62,11 @@ fun BottomBar(navController: NavHostController) {
 fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Screens.Post.route
+        startDestination = "splash_screen"
     ) {
-
+        composable(route = "splash_screen"){
+            SplashScreen(navController = navController)
+        }
         composable(route = Screens.Post.route) {
             PostsScreenRoute(
                 navigateToDetail = {
@@ -73,7 +75,11 @@ fun NavGraph(navController: NavHostController) {
             )
         }
         composable(route = Screens.Album.route) {
-            AlbumsScreensRoute()
+            AlbumsScreensRoute(
+                navigateToDetail = {
+                    navController.navigate("photos/$it")
+                }
+            )
         }
         composable(
             route = "comments/{postId}",
@@ -87,5 +93,21 @@ fun NavGraph(navController: NavHostController) {
             CommentsScreenRoute(postId = navBackStackEntry.arguments?.getString("postId").orEmpty())
 
         }
+        composable(
+            route = "photos/{albumId}",
+            arguments = listOf(
+                navArgument("albumId"){
+                    type = NavType.StringType
+                    defaultValue = "0"
+                }
+            )
+        ){
+            navBackStackEntry ->
+            PhotosScreenRoute(albumId = navBackStackEntry.arguments?.getString("albumId").orEmpty())
+
+        }
+
+
+
     }
 }

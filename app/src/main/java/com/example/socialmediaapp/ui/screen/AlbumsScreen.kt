@@ -3,6 +3,7 @@ package com.example.socialmediaapp.ui.screen
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,12 +39,20 @@ import com.example.socialmediaapp.data.model.Albums
 import com.example.socialmediaapp.ui.theme.SocialMediaAppTheme
 import com.example.socialmediaapp.viewmodel.MainViewModel
 @Composable
-fun AlbumsScreensRoute(viewModel : MainViewModel = hiltViewModel()){
+fun AlbumsScreensRoute(
+    viewModel : MainViewModel = hiltViewModel(),
+    navigateToDetail : (String) -> Unit
+    ){
     val albums = viewModel.getAlbums().collectAsLazyPagingItems()
-    AlbumsScreen(albums = albums)
+    AlbumsScreen(albums = albums, navigateToDetail = {
+        navigateToDetail.invoke(it)
+    })
 }
 @Composable
-internal fun AlbumsScreen(albums : LazyPagingItems<Albums>){
+internal fun AlbumsScreen(
+    albums : LazyPagingItems<Albums>,
+    navigateToDetail: (String) -> Unit
+){
     Box(modifier = Modifier.fillMaxSize())
     {
         LazyColumn(
@@ -57,7 +66,8 @@ internal fun AlbumsScreen(albums : LazyPagingItems<Albums>){
                 albums[index]?.let{album->
                     AlbumsScreensItems(
                         albums = album,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.
+                                clickable { navigateToDetail.invoke(album.id.toString()) }
                     )
                 }
 

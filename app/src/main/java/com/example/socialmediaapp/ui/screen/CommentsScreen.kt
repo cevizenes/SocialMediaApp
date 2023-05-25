@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -122,9 +123,13 @@ fun CommentsScreenItems(
             modifier = Modifier.padding(8.dp)
         ){
             Text(
-                text = comments.name,
+                text = "Name: " + comments.name,
                 color = Color.White,
-                style = TextStyle(fontWeight = FontWeight.Normal)
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                    )
+
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
