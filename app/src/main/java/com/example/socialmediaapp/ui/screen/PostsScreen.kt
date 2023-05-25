@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -41,93 +40,92 @@ import com.example.socialmediaapp.ui.theme.SocialMediaAppTheme
 import com.example.socialmediaapp.viewmodel.MainViewModel
 
 @Composable
-fun PostsScreenRoute(viewModel : MainViewModel = hiltViewModel() ){
+fun PostsScreenRoute(
+    viewModel: MainViewModel = hiltViewModel(),
+    navigateToDetail: (String) -> Unit
+) {
     val posts = viewModel.getPosts().collectAsLazyPagingItems()
-    PostsScreen(posts = posts)
+    PostsScreen(posts = posts, navigateToDetail = {
+        navigateToDetail.invoke(it)
+    })
 }
+
 @Composable
-internal fun PostsScreen( posts : LazyPagingItems<Posts>
-){
-    val navController = rememberNavController()
-    Box(modifier = Modifier.fillMaxSize()){
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                contentPadding = PaddingValues(bottom = 65.dp)
-            ){
-                items(posts.itemCount){index->
-                    posts[index]?.let { post->
-                        PostsScreenItems(
-                            post = post,
-                            modifier = Modifier
-                                .clickable { navController.navigate(Screens.Comments.route.plus("?postId=${post.id}"))  },
+internal fun PostsScreen(
+    posts: LazyPagingItems<Posts>,
+    navigateToDetail: (String) -> Unit
+) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(bottom = 65.dp)
+        ) {
+            items(posts.itemCount) { index ->
+                posts[index]?.let { post ->
+                    PostsScreenItems(
+                        post = post,
+                        modifier = Modifier
+                            .clickable {
+                                navigateToDetail.invoke(post.id.toString())
+                            },
+                    )
+                }
+            }
+            posts.apply {
+                val error = when {
+                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                    else -> null
+                }
 
-                        )
+                val loading = when {
+                    loadState.prepend is LoadState.Loading -> loadState.prepend as LoadState.Loading
+                    loadState.append is LoadState.Loading -> loadState.append as LoadState.Loading
+                    loadState.refresh is LoadState.Loading -> loadState.refresh as LoadState.Loading
+                    else -> null
+                }
 
-                    }
-
-                    }
-                posts.apply {
-                    val error = when {
-                        loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-                        loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-                        loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-                        else -> null
-                    }
-
-                    val loading = when {
-                        loadState.prepend is LoadState.Loading -> loadState.prepend as LoadState.Loading
-                        loadState.append is LoadState.Loading -> loadState.append as LoadState.Loading
-                        loadState.refresh is LoadState.Loading -> loadState.refresh as LoadState.Loading
-                        else -> null
-                    }
-
-                    if(loading != null){
-                        repeat((0..20).count()){
-                            item {
-                                Box(
-                                    modifier = Modifier
-                                        .background(color = Color.DarkGray)
-                                ){
-                                    CircularProgressIndicator()
-                                }
+                if (loading != null) {
+                    repeat((0..20).count()) {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .background(color = Color.DarkGray)
+                            ) {
+                                CircularProgressIndicator()
                             }
                         }
                     }
-                    if(error != null){
-                        error.error.localizedMessage?.let { Log.e("Error",it)}
-                    }
-
                 }
-
+                if (error != null) {
+                    error.error.localizedMessage?.let { Log.e("Error", it) }
                 }
-
-
             }
-
         }
-
+    }
+}
 
 
 @Composable
 fun PostsScreenItems(
-    post : Posts,
-    modifier : Modifier = Modifier,
-
-){
+    post: Posts,
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = modifier,
         elevation = 5.dp,
-        
-    ){
+
+        ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Max)
                 .padding(16.dp)
 
-        ){
+        ) {
             Spacer(modifier = Modifier.width(16.dp))
             Column(
                 modifier = Modifier
@@ -154,22 +152,20 @@ fun PostsScreenItems(
             }
         }
     }
-
 }
-
 
 @Preview
 @Composable
-fun PostsItemPreview(){
+fun PostsItemPreview() {
     SocialMediaAppTheme {
         PostsScreenItems(
             post = Posts(
-               body = "Deneme",
-               id = 1,
-               title = "Deneme",
-               userId = 1
+                body = "Deneme",
+                id = 1,
+                title = "Deneme",
+                userId = 1
             ),
             modifier = Modifier.fillMaxWidth(),
-            )
+        )
     }
 }

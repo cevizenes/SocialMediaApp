@@ -18,25 +18,26 @@ import androidx.navigation.navArgument
 import com.example.socialmediaapp.extensions.AddItems
 
 
-
 @Composable
-fun MainScreen(){
-   val navController = rememberNavController()
-   Scaffold(
+fun MainScreen() {
+    val navController = rememberNavController()
+    Scaffold(
         bottomBar = {
-          BottomBar(navController)
+            BottomBar(navController)
         }
-   ) { padding->
-       Box(modifier = Modifier.padding(
-           PaddingValues(bottom = padding.calculateBottomPadding())
-       ))
-     NavGraph(navController)
-   }
+    ) { padding ->
+        Box(
+            modifier = Modifier.padding(
+                PaddingValues(bottom = padding.calculateBottomPadding())
+            )
+        )
+        NavGraph(navController)
+    }
 }
 
 
 @Composable
-fun BottomBar(navController: NavHostController){
+fun BottomBar(navController: NavHostController) {
     val appScreens = listOf(
         Screens.Post,
         Screens.Album
@@ -46,41 +47,45 @@ fun BottomBar(navController: NavHostController){
     val currentDestination = navBackStackEntry?.destination
 
     BottomNavigation {
-        appScreens.forEach{appScreen->
-          AddItems(
-              appScreen = appScreen,
-              currentDestination = currentDestination,
-              navController = navController )
+        appScreens.forEach { appScreen ->
+            AddItems(
+                appScreen = appScreen,
+                currentDestination = currentDestination,
+                navController = navController
+            )
         }
     }
 }
 
 
 @Composable
-fun NavGraph(navController: NavHostController){
-   NavHost(
-       navController = navController,
-       startDestination = Screens.Post.route
-   ){
+fun NavGraph(navController: NavHostController) {
+    NavHost(
+        navController = navController,
+        startDestination = Screens.Post.route
+    ) {
 
-       composable(route = Screens.Post.route){
-           PostsScreenRoute()
-       }
-       composable(route = Screens.Album.route){
-           AlbumsScreensRoute()
-       }
-       composable(
-           route = Screens.Comments.route.plus("?postId = {postId}"),
-          arguments = listOf(
-              navArgument("postId"){
-                  type = NavType.IntType
-                  defaultValue = 0
-              }
-          )
-       ){
-           navBackStackEntry ->
-           navBackStackEntry.arguments?.getInt("postId")?.let { CommentsScreenRoute(postId = it) }
+        composable(route = Screens.Post.route) {
+            PostsScreenRoute(
+                navigateToDetail = {
+                    navController.navigate("comments/$it")
+                }
+            )
+        }
+        composable(route = Screens.Album.route) {
+            AlbumsScreensRoute()
+        }
+        composable(
+            route = "comments/{postId}",
+            arguments = listOf(
+                navArgument("postId") {
+                    type = NavType.StringType
+                    defaultValue = "0"
+                }
+            )
+        ) { navBackStackEntry ->
+            CommentsScreenRoute(postId = navBackStackEntry.arguments?.getString("postId").orEmpty())
 
-       }
-   }
+        }
+    }
 }

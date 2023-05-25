@@ -37,8 +37,11 @@ import com.example.socialmediaapp.viewmodel.MainViewModel
 import kotlin.random.Random
 
 @Composable
-fun CommentsScreenRoute(viewModel : MainViewModel = hiltViewModel(), postId : Int){
-    val commentsByPostId = viewModel.getCommentsByPostId(postId).collectAsLazyPagingItems()
+fun CommentsScreenRoute(
+    viewModel: MainViewModel = hiltViewModel(),
+    postId: String
+){
+    val commentsByPostId = viewModel.getCommentsByPostId(postId.toInt()).collectAsLazyPagingItems()
     CommentsScreen(comments = commentsByPostId)
 }
 
