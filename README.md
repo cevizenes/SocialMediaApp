@@ -12,6 +12,7 @@ Bu projede [JSONPlaceholder](http://jsonplaceholder.typicode.com/)'a ait API kul
 - Navigation
 - Flow
 - Coil
+- Splash Screen
 
 ## ScreenShots
 
