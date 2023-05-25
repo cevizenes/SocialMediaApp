@@ -1,4 +1,4 @@
-package com.example.socialmediaapp.ui.screen
+package com.example.socialmediaapp.ui.navigation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,10 +16,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.socialmediaapp.extensions.AddItems
+import com.example.socialmediaapp.ui.screen.AlbumsScreensRoute
+import com.example.socialmediaapp.ui.screen.CommentsScreenRoute
+import com.example.socialmediaapp.ui.screen.PhotosScreenRoute
+import com.example.socialmediaapp.ui.screen.PostsScreenRoute
+import com.example.socialmediaapp.ui.screen.Screens
+import com.example.socialmediaapp.ui.screen.SplashScreen
 
 
 @Composable
-fun MainScreen() {
+fun Nav() {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {
