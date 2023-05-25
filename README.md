@@ -16,19 +16,19 @@ Bu projede [JSONPlaceholder](http://jsonplaceholder.typicode.com/)'a ait API kul
 ## ScreenShots
 
 ### Posts
-![](https://github.com/cevizenes/SocialMediaApp/blob/master/screenshots/Posts.png?raw=true)
+<img src = "https://github.com/cevizenes/SocialMediaApp/blob/master/screenshots/Posts.png?raw=true" width ="250">
 
 
 ### Comments
-![](https://github.com/cevizenes/SocialMediaApp/blob/master/screenshots/PostsDetails.png?raw=true)
+<img src = "https://github.com/cevizenes/SocialMediaApp/blob/master/screenshots/PostsDetails.png?raw=true" width ="250">
 
 
 ### Albums
-![](https://github.com/cevizenes/SocialMediaApp/blob/master/screenshots/Albums.png?raw=true)
+<img src = "https://github.com/cevizenes/SocialMediaApp/blob/master/screenshots/Albums.png?raw=true" width ="250">
 
 
 ### Thumbnails
-![](https://github.com/cevizenes/SocialMediaApp/blob/master/screenshots/AlbumsThumbnails.png?raw=true)
+<img src = "https://github.com/cevizenes/SocialMediaApp/blob/master/screenshots/AlbumsThumbnails.png?raw=true" width ="250">
 
 ### Original Photo
-![](https://github.com/cevizenes/SocialMediaApp/blob/master/screenshots/OriginalSize.png?raw=true)
+<img src = "https://github.com/cevizenes/SocialMediaApp/blob/master/screenshots/OriginalSize.png?raw=true" width ="250">
