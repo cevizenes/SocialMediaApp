@@ -1,4 +1,4 @@
-package com.example.socialmediaapp.network.api
+package com.example.socialmediaapp.data.remote.api
 
 import com.example.socialmediaapp.data.model.Albums
 import com.example.socialmediaapp.data.model.Comments

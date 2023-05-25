@@ -1,6 +1,6 @@
 package com.example.socialmediaapp.di
 
-import com.example.socialmediaapp.network.api.ApiService
+import com.example.socialmediaapp.data.remote.api.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

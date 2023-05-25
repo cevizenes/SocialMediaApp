@@ -1,9 +1,9 @@
-package com.example.socialmediaapp
+package com.example.socialmediaapp.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.socialmediaapp.data.model.Posts
-import com.example.socialmediaapp.network.api.ApiService
+import com.example.socialmediaapp.data.remote.api.ApiService
 import java.lang.Exception
 
 class PostsPagingSource(
