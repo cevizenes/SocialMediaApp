@@ -20,14 +20,14 @@ class PostsPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Posts> {
         return try {
             val start = params.key ?: 0
-            val response = api.getPosts(start,1)
+            val response = api.getPosts(start,params.loadSize)
             if(response.isSuccessful){
                 val posts = response.body() ?: emptyList()
 
                 LoadResult.Page(
                     data = posts,
-                    prevKey = if(start == 0) null else start - 1,
-                    nextKey = if(posts.isEmpty()) null else start + 1
+                    prevKey = if(start == 0) null else start - params.loadSize,
+                    nextKey = if(posts.isEmpty()) null else start + params.loadSize
                 )
             }else{
                 return LoadResult.Error(Exception("Failed"))

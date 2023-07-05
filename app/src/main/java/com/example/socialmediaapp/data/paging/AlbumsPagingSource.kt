@@ -18,14 +18,14 @@ class AlbumsPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Albums> {
         return try {
             val start = params.key ?: 0
-            val response = api.getAlbums(start,1)
+            val response = api.getAlbums(start,params.loadSize)
             if(response.isSuccessful){
                 val albums  = response.body() ?: emptyList()
 
                 LoadResult.Page(
                     data = albums,
-                    prevKey = if(start == 0) null else start - 1,
-                    nextKey = if(albums.isEmpty()) null else start + 1
+                    prevKey = if(start == 0) null else start - params.loadSize,
+                    nextKey = if(albums.isEmpty()) null else start + params.loadSize
                 )
             } else {
                 return LoadResult.Error(Exception("Failed"))
